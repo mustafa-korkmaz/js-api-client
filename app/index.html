@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Js client</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="core/settings/settings.service.js"></script>
+    <script type="text/javascript" src="core/http/http.service.js"></script>
+</head>
+
+<body>
+    <h1>My tiny jQuery/ajax client for client-side API calls.</h1>
+    <button onclick="getButtonClicked();">Send an XHR Get request.</button> </br></br>
+    <button onclick="postButtonClicked();">Send an XHR Post request.</button>
+</body>
+
+<script>
+    function getButtonClicked() {
+        var service = new HttpService();
+        service.get("swagger", (data) => {
+            alert("method called succesfully")
+            console.log(data);
+        });
+    }
+
+    function postButtonClicked() {
+        var service = new HttpService();
+
+        const payload = {
+            email_or_username: "m.korkmaz@outlook.com",
+            password: "12345678"
+        }
+
+        service.post("token",payload, (data) => {
+            alert("method called succesfully")
+            console.log(data);
+        });
+    }
+</script>
+
+</html>
