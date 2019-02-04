@@ -18,17 +18,22 @@ class HttpService {
         $.ajax({
             url: requestUrl,
             headers: {
-                'ChannelType':this.settingService.xhr.channelType,
-                'Content-Type':this.settingService.xhr.contentType,
-                'ApiKey':this.settingService.xhr.apiKey,
+                'ChannelType': this.settingService.xhr.channelType,
+                'Content-Type': this.settingService.xhr.contentType,
+                'ApiKey': this.settingService.xhr.apiKey,
+                'Authorization': this.getAccessToken()
             },
             beforeSend: function (xhr: any) {
-                console.log("before sending..")
+                console.log("sending get req..")
             }
         })
             .done(function (data: any) {
                 onSuccess(data);
-            });
+            })
+            .fail(function (e) {
+                console.error(e);
+                onFail(e);
+            });;
     }
 
     /**
@@ -44,18 +49,28 @@ class HttpService {
         $.ajax({
             url: requestUrl,
             headers: {
-                'ChannelType':this.settingService.xhr.channelType,
-                'Content-Type':this.settingService.xhr.contentType,
-                'ApiKey':this.settingService.xhr.apiKey,
+                'ChannelType': this.settingService.xhr.channelType,
+                'Content-Type': this.settingService.xhr.contentType,
+                'ApiKey': this.settingService.xhr.apiKey,
+                'Authorization': this.getAccessToken()
             },
             method: "POST",
             data: JSON.stringify(jsonData),
             beforeSend: function (xhr: any) {
-                console.log("before sending..")
+                console.log("sending post req..")
             }
         })
             .done(function (data: any) {
                 onSuccess(data);
+            })
+            .fail(function (e) {
+                console.error(e);
+                onFail(e);
             });
+    }
+
+    private getAccessToken(): string {
+        const cookieService = new CookieService();
+        return "Bearer " + cookieService.getCookie("access_token");
     }
 }

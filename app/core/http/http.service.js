@@ -14,13 +14,24 @@ var HttpService = (function () {
         //todo: add on error.
         $.ajax({
             url: requestUrl,
+            headers: {
+                'ChannelType': this.settingService.xhr.channelType,
+                'Content-Type': this.settingService.xhr.contentType,
+                'ApiKey': this.settingService.xhr.apiKey,
+                'Authorization': this.getAccessToken()
+            },
             beforeSend: function (xhr) {
-                console.log("before sending..");
+                console.log("sending get req..");
             }
         })
             .done(function (data) {
             onSuccess(data);
+        })
+            .fail(function (e) {
+            console.error(e);
+            onFail(e);
         });
+        ;
     };
     /**
     * jquery ajax post method
@@ -37,16 +48,25 @@ var HttpService = (function () {
                 'ChannelType': this.settingService.xhr.channelType,
                 'Content-Type': this.settingService.xhr.contentType,
                 'ApiKey': this.settingService.xhr.apiKey,
+                'Authorization': this.getAccessToken()
             },
             method: "POST",
             data: JSON.stringify(jsonData),
             beforeSend: function (xhr) {
-                console.log("before sending..");
+                console.log("sending post req..");
             }
         })
             .done(function (data) {
             onSuccess(data);
+        })
+            .fail(function (e) {
+            console.error(e);
+            onFail(e);
         });
+    };
+    HttpService.prototype.getAccessToken = function () {
+        var cookieService = new CookieService();
+        return "Bearer " + cookieService.getCookie("access_token");
     };
     return HttpService;
 }());

@@ -4,7 +4,7 @@ var SettingsService = (function () {
         // xhr settings
         // ------------------------------------
         this.xhr = {
-            apiBaseUrl: 'http://api.prudentialconnect.com/',
+            apiBaseUrl: 'http://google.com/',
             contentType: 'application/json',
             channelType: '2',
             apiKey: '05e2cf47c23a461f6d64f0ac2d5eea33',
